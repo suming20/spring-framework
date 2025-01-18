@@ -1044,7 +1044,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
-				// Determine handler for the current request.
+				// Determine handler for the current request.通过HandleMapping 获取handler 就是Controller
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
@@ -1052,6 +1052,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// Determine handler adapter for the current request.
+	 			// handlerAdapter具体调用 handler 获取适配器
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
@@ -1068,7 +1069,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
-				// Actually invoke the handler.
+				// Actually invoke the handler. 具体的调用，执行目标方法 通过适配器调用具体的handler
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
@@ -1295,6 +1296,10 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * Return the HandlerAdapter for this handler object.
 	 * @param handler the handler object to find an adapter for
 	 * @throws ServletException if no HandlerAdapter can be found for the handler. This is a fatal error.
+	 * RequestMappingHandlerAdapter  支持方法上标注RequestMapping
+	 * HandlerFunctionAdapter  支持函数式编程的
+	 * HttpRequestHandlerAdapter
+	 * SimpleControllerHandlerAdapter
 	 */
 	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
 		if (this.handlerAdapters != null) {

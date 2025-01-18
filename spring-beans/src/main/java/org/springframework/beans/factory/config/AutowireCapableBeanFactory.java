@@ -76,6 +76,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @see #createBean
 	 * @see #autowire
 	 * @see #autowireBeanProperties
+	 * 按照set方法中的名字，首字母小写，根据名字注入；
 	 */
 	int AUTOWIRE_BY_NAME = 1;
 
@@ -85,6 +86,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @see #createBean
 	 * @see #autowire
 	 * @see #autowireBeanProperties
+	 * 根据类型注入
 	 */
 	int AUTOWIRE_BY_TYPE = 2;
 
@@ -93,6 +95,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * can be satisfied (involves resolving the appropriate constructor).
 	 * @see #createBean
 	 * @see #autowire
+	 * 根据构造函数注入，先根据类型寻找，再根据名称寻找
 	 */
 	int AUTOWIRE_CONSTRUCTOR = 3;
 
@@ -103,6 +106,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @see #autowire
 	 * @deprecated as of Spring 3.0: If you are using mixed autowiring strategies,
 	 * prefer annotation-based autowiring for clearer demarcation of autowiring needs.
+	 * 自动探针，spring3.0弃用了，有构造器用构造器，没有用属性；
 	 */
 	@Deprecated
 	int AUTOWIRE_AUTODETECT = 4;

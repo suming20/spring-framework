@@ -550,6 +550,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.applicationListeners;
 	}
 
+	// spring容器初始化的核心流程
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
@@ -558,6 +559,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// Prepare this context for refreshing.
 			prepareRefresh();
 
+			// 获取BeanFactory对象，loadBeanDefinition也在此方法中 refreshBeanFactory
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
@@ -570,26 +572,35 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				StartupStep beanPostProcess = this.applicationStartup.start("spring.context.beans.post-process");
 				// Invoke factory processors registered as beans in the context.
+				// beanFactoryPostProcessor的注册，在此方法中，因为还没有注入 AutowiredAnnotationBeanPostProcessor/CommonAnnotationBeanPostProcessor
+				// 内部无法注入相关的bean；
 				invokeBeanFactoryPostProcessors(beanFactory);
 				// Register bean processors that intercept bean creation.
+				// 注册 BeanPostProcessor AutowiredAnnotationBeanPostProcessor/CommonAnnotationBeanPostProcessor
 				registerBeanPostProcessors(beanFactory);
 				beanPostProcess.end();
 
 				// Initialize message source for this context.
+				// 国际化
 				initMessageSource();
 
+				// 事件分发器
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
+				// 空实现，用来继承扩展
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
+				// 注册监听器
 				// Check for listener beans and register them.
 				registerListeners();
-
+				
+				// 完成Bean的初始化 refresh的最后一步  非懒加载的bean
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 
+				// 完成bean的Refresh
 				// Last step: publish corresponding event.
 				finishRefresh();
 			}
@@ -923,11 +934,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Stop using the temporary ClassLoader for type matching.
+		// 禁止使用临时类加载器进行配置
 		beanFactory.setTempClassLoader(null);
 
+		// 冻结所有bean的定义，说明注册的bean将不被修改或任何进一步处理
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		beanFactory.freezeConfiguration();
 
+		// 实例化剩下的单例对象
 		// Instantiate all remaining (non-lazy-init) singletons.
 		beanFactory.preInstantiateSingletons();
 	}
@@ -949,6 +963,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		getLifecycleProcessor().onRefresh();
 
 		// Publish the final event.
+		// 发布一个容器Refresh的事件
 		publishEvent(new ContextRefreshedEvent(this));
 
 		// Participate in LiveBeansView MBean, if active.

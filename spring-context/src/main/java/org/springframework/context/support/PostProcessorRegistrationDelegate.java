@@ -217,7 +217,7 @@ final class PostProcessorRegistrationDelegate {
 		// list of all declined PRs involving changes to PostProcessorRegistrationDelegate
 		// to ensure that your proposal does not result in a breaking change:
 		// https://github.com/spring-projects/spring-framework/issues?q=PostProcessorRegistrationDelegate+is%3Aclosed+label%3A%22status%3A+declined%22
-
+		// 找所有实现了beanPostProcessor类的bean
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
 
 		// Register BeanPostProcessorChecker that logs an info message when
@@ -232,7 +232,9 @@ final class PostProcessorRegistrationDelegate {
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();
 		List<String> orderedPostProcessorNames = new ArrayList<>();
 		List<String> nonOrderedPostProcessorNames = new ArrayList<>();
+		// 遍历数组
 		for (String ppName : postProcessorNames) {
+			// 判断PriorityOrdered是否实现
 			if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
 				priorityOrderedPostProcessors.add(pp);
@@ -244,6 +246,7 @@ final class PostProcessorRegistrationDelegate {
 				orderedPostProcessorNames.add(ppName);
 			}
 			else {
+				// 一般自定义实现走这个
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}

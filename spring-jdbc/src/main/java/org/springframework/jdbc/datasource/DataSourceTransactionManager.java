@@ -288,6 +288,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 				if (logger.isDebugEnabled()) {
 					logger.debug("Switching JDBC Connection [" + con + "] to manual commit");
 				}
+				// 设置事务的自动提交为false
 				con.setAutoCommit(false);
 			}
 
@@ -334,6 +335,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			logger.debug("Committing JDBC transaction on Connection [" + con + "]");
 		}
 		try {
+			// 数据库连接 Connection commit
 			con.commit();
 		}
 		catch (SQLException ex) {

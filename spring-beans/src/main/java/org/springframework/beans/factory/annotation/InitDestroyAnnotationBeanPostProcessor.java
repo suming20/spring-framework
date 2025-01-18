@@ -215,7 +215,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 		}
 		return metadata;
 	}
-
+	// @PostConstruct  @Destroy
 	private LifecycleMetadata buildLifecycleMetadata(final Class<?> clazz) {
 		if (!AnnotationUtils.isCandidateClass(clazz, Arrays.asList(this.initAnnotationType, this.destroyAnnotationType))) {
 			return this.emptyLifecycleMetadata;

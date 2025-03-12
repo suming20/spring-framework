@@ -217,6 +217,10 @@ class ConstructorResolver {
 								paramNames = pnd.getParameterNames(candidate);
 							}
 						}
+						/**
+						 * 这里会把构造器中的参数进行实例化bean，其实底层每个参数都是去调用了getBean创建好了bean
+						 * 把每个解析出来的参数都对象封装成了ArgumentsHolder对象，参数持有者
+						 */
 						argsHolder = createArgumentArray(beanName, mbd, resolvedValues, bw, paramTypes, paramNames,
 								getUserDeclaredConstructor(candidate), autowiring, candidates.length == 1);
 					}

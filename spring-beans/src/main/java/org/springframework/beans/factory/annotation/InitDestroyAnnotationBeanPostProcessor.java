@@ -152,6 +152,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		// 查找@PostConstruct @PreDestroy注解的方法，封装成对应的LifecyleMetadata对象
 		LifecycleMetadata metadata = findLifecycleMetadata(bean.getClass());
 		try {
 			metadata.invokeInitMethods(bean, beanName);
@@ -201,6 +202,8 @@ public class InitDestroyAnnotationBeanPostProcessor
 			// Happens after deserialization, during destruction...
 			return buildLifecycleMetadata(clazz);
 		}
+		// 采用双重检查锁机制来进行快速检查，尽量减少对锁的使用。
+		// 首先进行快速检查，只需最少的锁竞争.
 		// Quick check on the concurrent map first, with minimal locking.
 		LifecycleMetadata metadata = this.lifecycleMetadataCache.get(clazz);
 		if (metadata == null) {
@@ -215,8 +218,9 @@ public class InitDestroyAnnotationBeanPostProcessor
 		}
 		return metadata;
 	}
-	// @PostConstruct  @Destroy
+	// @PostConstruct  @PreDestroy
 	private LifecycleMetadata buildLifecycleMetadata(final Class<?> clazz) {
+		// 判断当前Bean是否包含@PostContruct,@PreDestroy，如果不包含，直接返回
 		if (!AnnotationUtils.isCandidateClass(clazz, Arrays.asList(this.initAnnotationType, this.destroyAnnotationType))) {
 			return this.emptyLifecycleMetadata;
 		}
@@ -230,6 +234,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 			final List<LifecycleElement> currDestroyMethods = new ArrayList<>();
 
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
+				// 判断方法是有@PostConstruct注解
 				if (this.initAnnotationType != null && method.isAnnotationPresent(this.initAnnotationType)) {
 					LifecycleElement element = new LifecycleElement(method);
 					currInitMethods.add(element);
@@ -237,6 +242,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 						logger.trace("Found init method on class [" + clazz.getName() + "]: " + method);
 					}
 				}
+				// 判断方法是有@PreDestroy注解
 				if (this.destroyAnnotationType != null && method.isAnnotationPresent(this.destroyAnnotationType)) {
 					currDestroyMethods.add(new LifecycleElement(method));
 					if (logger.isTraceEnabled()) {

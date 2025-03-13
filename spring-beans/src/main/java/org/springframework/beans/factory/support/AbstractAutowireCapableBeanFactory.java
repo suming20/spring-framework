@@ -1797,6 +1797,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see #applyBeanPostProcessorsBeforeInitialization
 	 * @see #invokeInitMethods
 	 * @see #applyBeanPostProcessorsAfterInitialization
+	 * bean初始化的；入口
 	 */
 	protected Object initializeBean(String beanName, Object bean, @Nullable RootBeanDefinition mbd) {
 		if (System.getSecurityManager() != null) {
@@ -1814,7 +1815,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (mbd == null || !mbd.isSynthetic()) {
 			// 执行另一部分aware接口方法 ApplicationContextAware接口
 			// 调用postProcess#before方法  此处会调用CommonAnnotationBeanPostProcessor处理@PostCosntruct注解等
-			// InitDestroyAnnotationBeanPostProcessor 此类处理@PostCosntruct @Destroy
+			// InitDestroyAnnotationBeanPostProcessor 此类处理@PostCosntruct @PreDestroy
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 

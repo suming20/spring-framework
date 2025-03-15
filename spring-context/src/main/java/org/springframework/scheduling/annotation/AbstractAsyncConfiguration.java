@@ -46,16 +46,19 @@ import org.springframework.util.function.SingletonSupplier;
 @Configuration(proxyBeanMethods = false)
 public abstract class AbstractAsyncConfiguration implements ImportAware {
 
+	//enableAsync注解属性
 	@Nullable
 	protected AnnotationAttributes enableAsync;
 
+	//线程执行器
 	@Nullable
 	protected Supplier<Executor> executor;
 
+	//异常执行器
 	@Nullable
 	protected Supplier<AsyncUncaughtExceptionHandler> exceptionHandler;
 
-
+	//设置注解元数据信息
 	@Override
 	public void setImportMetadata(AnnotationMetadata importMetadata) {
 		this.enableAsync = AnnotationAttributes.fromMap(
@@ -66,6 +69,7 @@ public abstract class AbstractAsyncConfiguration implements ImportAware {
 		}
 	}
 
+	//根据配置设置异步任务执行器和异常处理器
 	/**
 	 * Collect any {@link AsyncConfigurer} beans through autowiring.
 	 */

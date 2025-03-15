@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  * @see EnableAsync
  * @see ProxyAsyncConfiguration
  */
+// @EanableAsync中定义的模式AdviceMode加在@Configuration标记的类上，确定抽象异步配置类的实现
 public class AsyncConfigurationSelector extends AdviceModeImportSelector<EnableAsync> {
 
 	private static final String ASYNC_EXECUTION_ASPECT_CONFIGURATION_CLASS_NAME =

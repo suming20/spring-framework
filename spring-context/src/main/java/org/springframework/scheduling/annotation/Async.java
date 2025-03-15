@@ -44,6 +44,9 @@ import java.lang.annotation.Target;
  * it will have to return a temporary {@code Future} handle that just passes a value
  * through: e.g. Spring's {@link AsyncResult}, EJB 3.1's {@link javax.ejb.AsyncResult},
  * or {@link java.util.concurrent.CompletableFuture#completedFuture(Object)}.
+ * 但返回值只能是void或者Future.(ListenableFuture接口/CompletableFuture类)
+ * * Future是代理返回的切实的异步返回，用以追踪异步方法的返回值。当然也可以使用AsyncResult类（实现
+ * * ListenableFuture接口）(Spring或者EJB都有)或者CompletableFuture类
  *
  * @author Juergen Hoeller
  * @author Chris Beams
@@ -68,6 +71,8 @@ public @interface Async {
 	 * of {@code Async#value} always overrides any value set at the class level.
 	 * @since 3.1.2
 	 */
+	//用以限定执行方法的执行器名称（自定义）：Executor或者TaskExecutor
+	//加在类上表示整个类都使用，加在方法上会覆盖类上的设置
 	String value() default "";
 
 }

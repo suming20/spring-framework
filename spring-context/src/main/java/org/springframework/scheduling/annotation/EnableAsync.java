@@ -171,6 +171,7 @@ public @interface EnableAsync {
 	 * custom annotation type to indicate that a method (or all methods of
 	 * a given class) should be invoked asynchronously.
 	 */
+	// 该属性用来支持用户自定义异步注解，默认扫描spring的@Async和EJB3.1的@code @javax.ejb.Asynchronous
 	Class<? extends Annotation> annotation() default Annotation.class;
 
 	/**
@@ -185,6 +186,7 @@ public @interface EnableAsync {
 	 * negative impact in practice unless one is explicitly expecting one type of proxy
 	 * vs. another &mdash; for example, in tests.
 	 */
+	//标明是否需要创建CGLIB子类代理，AdviceMode=PROXY时才适用。注意设置为true时，其它spring管理的bean也会升级到CGLIB子类代理
 	boolean proxyTargetClass() default false;
 
 	/**
@@ -197,6 +199,7 @@ public @interface EnableAsync {
 	 * For a more advanced mode of interception, consider switching this to
 	 * {@link AdviceMode#ASPECTJ}.
 	 */
+	//标明异步通知将会如何实现，默认PROXY，如需支持同一个类中非异步方法调用另一个异步方法，需要设置为ASPECTJ
 	AdviceMode mode() default AdviceMode.PROXY;
 
 	/**
@@ -206,6 +209,7 @@ public @interface EnableAsync {
 	 * after all other post-processors, so that it can add an advisor to
 	 * existing proxies rather than double-proxy.
 	 */
+	//标明异步注解bean处理器应该遵循的执行顺序，默认最低的优先级（Integer.MAX_VALUE，值越小优先级越高）
 	int order() default Ordered.LOWEST_PRECEDENCE;
 
 }

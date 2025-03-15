@@ -66,6 +66,7 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.scheduling.annotation.AsyncAnnotationAdvisor
  * @see org.springframework.scheduling.annotation.AnnotationAsyncExecutionInterceptor
  */
+// Interceptor切面执行
 public class AsyncExecutionInterceptor extends AsyncExecutionAspectSupport implements MethodInterceptor, Ordered {
 
 	/**

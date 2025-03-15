@@ -44,14 +44,19 @@ public class ProxyAsyncConfiguration extends AbstractAsyncConfiguration {
 	@Bean(name = TaskManagementConfigUtils.ASYNC_ANNOTATION_PROCESSOR_BEAN_NAME)
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public AsyncAnnotationBeanPostProcessor asyncAdvisor() {
+		//判断注解元数据信息是否拿到
 		Assert.notNull(this.enableAsync, "@EnableAsync annotation metadata was not injected");
+		//新建一个异步注解bean后处理器
 		AsyncAnnotationBeanPostProcessor bpp = new AsyncAnnotationBeanPostProcessor();
+		//配置执行器与异常处理器
 		bpp.configure(this.executor, this.exceptionHandler);
 		Class<? extends Annotation> customAsyncAnnotation = this.enableAsync.getClass("annotation");
 		if (customAsyncAnnotation != AnnotationUtils.getDefaultValue(EnableAsync.class, "annotation")) {
 			bpp.setAsyncAnnotationType(customAsyncAnnotation);
 		}
+		//设置是否升级到CGLIB子类代理，默认不开启
 		bpp.setProxyTargetClass(this.enableAsync.getBoolean("proxyTargetClass"));
+		//设置执行优先级，默认最后执行
 		bpp.setOrder(this.enableAsync.<Integer>getNumber("order"));
 		return bpp;
 	}

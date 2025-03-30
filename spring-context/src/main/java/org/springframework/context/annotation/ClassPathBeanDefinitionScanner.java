@@ -161,10 +161,11 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		this.registry = registry;
-
+		// this.includeFilters = AnnotationTypeFilter(Component.class) useDefaultFilters = true;
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
+		// 设置 environment 和 resourceLoader
 		setEnvironment(environment);
 		setResourceLoader(resourceLoader);
 	}

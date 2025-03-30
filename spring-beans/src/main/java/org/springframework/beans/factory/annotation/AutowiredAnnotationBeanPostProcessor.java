@@ -129,7 +129,7 @@ import org.springframework.util.StringUtils;
  * @author Sebastien Deleuze
  * @author Sam Brannen
  * @since 2.5
- * @see #setAutowiredAnnotationType
+ * @see #setAutowiredAnnotationType 处理以下注解
  * @see Autowired
  * @see Value
  */

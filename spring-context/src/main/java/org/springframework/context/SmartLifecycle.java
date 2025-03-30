@@ -64,6 +64,7 @@ package org.springframework.context;
  * @see LifecycleProcessor
  * @see ConfigurableApplicationContext
  */
+// Lifecycle表示的是ApplicationContext的生命周期，可以定义一个SmartLifecycle来监听ApplicationContext的启动和关闭：
 public interface SmartLifecycle extends Lifecycle, Phased {
 
 	/**

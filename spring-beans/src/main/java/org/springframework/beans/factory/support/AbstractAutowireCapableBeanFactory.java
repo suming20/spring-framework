@@ -615,6 +615,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// 循环依赖 支持
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
+		// 第一次处理
 		if (earlySingletonExposure) {
 			if (logger.isTraceEnabled()) {
 				logger.trace("Eagerly caching bean '" + beanName +
@@ -631,6 +632,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 对bean的属性进行填充，将各个属性值注入，可能存在依赖于其他bean的属性，则递归初始化依赖的bean
 			populateBean(beanName, mbd, instanceWrapper);
 			// 执行初始化逻辑
+			// exposedObject有可能在initializationBean中被改变，后面第二次处理，如果被改变，并且有依赖于这个bean已经创建完成，则抛出异常
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -643,22 +645,31 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 		// 出现循环依赖
+		// 第二次处理
 		if (earlySingletonExposure) {
+			// 尝试从缓存中获取单例bean，后面参数为false，表示不从三级缓存中获取
+			// 这里不允许循环依赖，参数为false
 			Object earlySingletonReference = getSingleton(beanName, false);
+			/**
+			 * 不为null，则表示存在循环依赖，第一次处理的时候是添加了singletonFactories，当循环依赖注入的时候，会提前暴露，放到二级缓存中
+			 */
 			if (earlySingletonReference != null) {
 				// async导致前后不一致 因为循环依赖生成了代理对象，async又生成代理对象，添加@Lazy可以解决 直接赋值代理对象，不初始化
 				if (exposedObject == bean) {
 					exposedObject = earlySingletonReference;
 				}
+				// 不相等，并且有其他bean依赖这个bean时
 				else if (!this.allowRawInjectionDespiteWrapping && hasDependentBean(beanName)) {
 					String[] dependentBeans = getDependentBeans(beanName);
 					Set<String> actualDependentBeans = new LinkedHashSet<>(dependentBeans.length);
 					for (String dependentBean : dependentBeans) {
+						// 如果存在已经创建完成的bean（已经创建完成的bean依赖于当前创建的bean时）
 						if (!removeSingletonIfCreatedForTypeCheckOnly(dependentBean)) {
 							actualDependentBeans.add(dependentBean);
 						}
 					}
 					// async的使用与循环依赖不能一起使用
+					// 抛出异常，循环依赖
 					if (!actualDependentBeans.isEmpty()) {
 						throw new BeanCurrentlyInCreationException(beanName,
 								"Bean with name '" + beanName + "' has been injected into other beans [" +

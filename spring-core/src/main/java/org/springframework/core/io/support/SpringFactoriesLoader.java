@@ -123,6 +123,7 @@ public final class SpringFactoriesLoader {
 	 * @throws IllegalArgumentException if an error occurs while loading factory names
 	 * @see #loadFactories
 	 */
+	// 此处springboot自动配置调用获取META-INF/spring.factories中的配置类数组
 	public static List<String> loadFactoryNames(Class<?> factoryType, @Nullable ClassLoader classLoader) {
 		ClassLoader classLoaderToUse = classLoader;
 		if (classLoaderToUse == null) {

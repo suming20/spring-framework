@@ -80,8 +80,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext(DefaultListableBeanFactory beanFactory) {
 		super(beanFactory);
+		// 并且注册BeanDefinition (xml XmlBeanDefinitionReader)
 		this.reader = new AnnotatedBeanDefinitionReader(this);
-		// 主要用来扫描并且注册BeanDefinition
+		// 主要用来扫描
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 

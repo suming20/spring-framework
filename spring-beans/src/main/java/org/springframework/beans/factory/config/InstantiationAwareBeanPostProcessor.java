@@ -42,6 +42,8 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator#setCustomTargetSourceCreators
  * @see org.springframework.aop.framework.autoproxy.target.LazyInitTargetSourceCreator
  */
+// 特殊的处理器，短路处理器
+// 主要用来创建一些特殊的Bean，postProcessBeforeInstantiation返回非null之后，后续的初始化不执行
 public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**

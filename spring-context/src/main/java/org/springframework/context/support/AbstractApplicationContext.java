@@ -558,7 +558,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * AnnotationConfigWebApplicationContext继承的是AbstractRefreshableWebApplicationContext，所以它是可以刷的。
 	 * 不能刷新是指不能重复刷新，只能调用一次refresh方法，第二次时会报错。
 	 */
-	// spring容器初始化的核心流程
+	// todo spring容器初始化的核心流程
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {

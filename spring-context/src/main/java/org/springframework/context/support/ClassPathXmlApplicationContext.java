@@ -142,6 +142,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 		// 如果已经有applicationContext并需要配置成父子关系，那么调用这个构造方法
 		super(parent);
 		// 根据提供的路径，处理成配置文件数组（以分号，逗号，空格，tab，换行符分割）
+		// configLocations new String[]{"classpath:applicationContext.xml"}
 		setConfigLocations(configLocations);
 		// refresh默认为true
 		if (refresh) {

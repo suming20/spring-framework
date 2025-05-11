@@ -81,6 +81,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
 		// Create a new XmlBeanDefinitionReader for the given BeanFactory.
+		// beanDefinitionReader
 		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
 
 		// Configure the bean definition reader with this context's
@@ -122,11 +123,14 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	 */
 	protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
 		Resource[] configResources = getConfigResources();
+		// 获取Resource
 		if (configResources != null) {
 			reader.loadBeanDefinitions(configResources);
 		}
+		// 获取资源的路径，前面解析出的配置文件 classpath*:application.xml
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
+			// 解析xml结构的在这里开始
 			reader.loadBeanDefinitions(configLocations);
 		}
 	}

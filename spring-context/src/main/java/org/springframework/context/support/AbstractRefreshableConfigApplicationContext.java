@@ -73,11 +73,13 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 	 * Set the config locations for this application context.
 	 * <p>If not set, the implementation may use a default as appropriate.
 	 */
+	// spring-${name}.xml 带表达式的xml文件
 	public void setConfigLocations(@Nullable String... locations) {
 		if (locations != null) {
 			Assert.noNullElements(locations, "Config locations must not be null");
 			this.configLocations = new String[locations.length];
 			for (int i = 0; i < locations.length; i++) {
+				// 将解析后的配置文件路径保存到configLocations数组中； 解析时会将配置中的变量解析替换
 				this.configLocations[i] = resolvePath(locations[i]).trim();
 			}
 		}

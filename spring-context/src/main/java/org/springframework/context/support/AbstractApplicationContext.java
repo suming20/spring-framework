@@ -629,18 +629,21 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				 * 从BeanFactory中获取ApplicationListener类型的beanName，
 				 * 然后添加到ApplicationContext中的事件广播器applicationEventMulticaster中去，
 				 * 到这一步因为FactoryBean还没有调用getObject()方法生成Bean对象，所以这里要在根据类型找一下ApplicationListener，记录一下对应的beanName
+				 * 观察者模式
 				 */
 				// Check for listener beans and register them.
 				registerListeners();
 
 				/**
 				 * 完成BeanFactory的初始化，主要就是实例化非懒加载的单例Bean
+				 * 反射生成对象，填充属性，调用Bean的前后置处理器
 				 */
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 
 				// 完成bean的Refresh
 				// Last step: publish corresponding event.
+				// 发布事件与清除上下文环境
 				finishRefresh();
 			}
 
@@ -820,10 +823,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		// 实例化并调用所有已经注册的BeanFactoryPostProcessors变量中的值
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
+		// loadTimeWeaver
 		if (!NativeDetector.inNativeImage() && beanFactory.getTempClassLoader() == null &&
 				beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));

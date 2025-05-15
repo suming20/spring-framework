@@ -250,13 +250,18 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
 			throws BeansException {
 
+		// 解析Bean名称，主要是解析 别名，去掉FactoryBean的前缀“&”
 		String beanName = transformedBeanName(name);
+
+		// 注意这个，这个是返回值
 		Object beanInstance;
 
 		// Eagerly check singleton cache for manually registered singletons.
 		// 提前检查单例bean中是否有手动注册的单例对象，跟循环依赖有关系
 		Object sharedInstance = getSingleton(beanName);
+
 		// 如果单例bean的对象找到了，且没有创建bean实例需要的参数
+		// 此处的args传参是null，但是如果args不为空的时候，那么意味着调用方不是希望获取Bean，而是创建Bean
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
@@ -335,7 +340,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 				// Create bean instance.
 				// 创建Bean实例
+				// 判断是不是单例的，针对不同的使用不同的创建方式
 				if (mbd.isSingleton()) {
+					// scope的singleton的bean（创建了一个ObjectFactory，并且重写了getObject方法）
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							// 为给定的BeanDefinition创建一个Bean实例

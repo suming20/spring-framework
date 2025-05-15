@@ -613,15 +613,17 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
 		// 循环依赖 支持
+		// 判断是否需要提早曝光实例：单例&&允许循环依赖&&当前bean在创建中
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
+		// 前面都满足则为true，则半成品的bean加入到三级缓存
 		// 第一次处理
 		if (earlySingletonExposure) {
 			if (logger.isTraceEnabled()) {
 				logger.trace("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
-			// 三级缓存
+			// 三级缓存 用于解决循环依赖，提前曝光ObjectFactory
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -1008,6 +1010,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, Object bean) {
 		// 原始对象
 		Object exposedObject = bean;
+		// 如果bean不为空&&mdb不是合成的，存在SmartInstantiationAwareBeanPostProcessor（会调用getEarlyBeanReference方法
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 			for (SmartInstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().smartInstantiationAware) {
 				// 生成代理对象
@@ -1483,6 +1486,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (pvs != null) {
+			// 将所有的PropertyValues中的属性填充到bean中，真正注入在这里面，将属性注入到bean实例中
 			applyPropertyValues(beanName, mbd, bw, pvs);
 		}
 	}
@@ -1738,6 +1742,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					}
 					originalValue = new DependencyDescriptor(new MethodParameter(writeMethod, 0), true);
 				}
+				/**
+				 * 使用解析器解析不同的值（包裹循环依赖的解决）
+				 */
 				Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);
 				Object convertedValue = resolvedValue;
 				boolean convertible = bw.isWritableProperty(propertyName) &&

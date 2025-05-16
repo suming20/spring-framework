@@ -453,7 +453,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			throws BeansException {
 
 		Object result = existingBean;
-		// asyncAnnotationBeanPostProcessor  /  aspectjBeanPostProcessor
+		// asyncAnnotationBeanPostProcessor  /  annotationAwareAspectJAutoProxyCreator
 		for (BeanPostProcessor processor : getBeanPostProcessors()) {
 			Object current = processor.postProcessAfterInitialization(result, beanName);
 			if (current == null) {
@@ -591,6 +591,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		// 从包装类中获取原始bean
 		Object bean = instanceWrapper.getWrappedInstance();
+		// 拿到该实例bean的类型
 		Class<?> beanType = instanceWrapper.getWrappedClass();
 		if (beanType != NullBean.class) {
 			mbd.resolvedTargetType = beanType;

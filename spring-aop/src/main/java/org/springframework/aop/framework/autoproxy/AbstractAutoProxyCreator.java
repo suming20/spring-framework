@@ -289,7 +289,12 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	@Override
 	public Object postProcessAfterInitialization(@Nullable Object bean, String beanName) {
 		if (bean != null) {
+			/**
+			 * 缓存键：beanName不为空的话，使用beanName（FactoryBean会在键上加&符号）
+			 * 如果beanName为空，使用Class对象作为缓存的key
+			 */
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
+			// 判断当前bean是否需要被代理，如果需要则进行封装
 			if (this.earlyProxyReferences.remove(cacheKey) != bean) {
 				return wrapIfNecessary(bean, beanName, cacheKey);
 			}
@@ -330,20 +335,28 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (StringUtils.hasLength(beanName) && this.targetSourcedBeans.contains(beanName)) {
 			return bean;
 		}
+		// 已经处理过的bean，不需要再次进行处理，节省时间
 		if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) {
 			return bean;
 		}
+		// bean的类是aop基础设施类 || bean应该跳过，则标记为无需处理，缓存并返回
 		if (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) {
 			this.advisedBeans.put(cacheKey, Boolean.FALSE);
 			return bean;
 		}
 
 		// Create proxy if we have advice.
+		// 获取当前bean的Advices和Advisors
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
+			/**
+			 * 创建代理对象，这边的SingletonTargetSource的target属性存放的就是我们原来的bean实例（也就是被代理对象）
+			 * 用于最后增加逻辑执行完毕后，通过反射执行我们真正的方法时使用（method。invoke(bean,args)
+			 */
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
+			// 创建代理后，将cacheKey -> 代理类的class放到缓存中
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
 		}

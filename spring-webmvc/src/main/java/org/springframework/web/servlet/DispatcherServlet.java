@@ -486,6 +486,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * This implementation calls {@link #initStrategies}.
 	 */
+	// ContextRefreshContext事件监听机制 9大组件的初始化过程
 	@Override
 	protected void onRefresh(ApplicationContext context) {
 		initStrategies(context);
@@ -496,13 +497,19 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		// 文件上传解析器
 		initMultipartResolver(context);
+		// 国际化相关，区域解析器
 		initLocaleResolver(context);
 		initThemeResolver(context);
+		// 处理器映射器
 		initHandlerMappings(context);
+		// 处理器适配器
 		initHandlerAdapters(context);
+		// 异常解析器
 		initHandlerExceptionResolvers(context);
 		initRequestToViewNameTranslator(context);
+		// 视图解析器
 		initViewResolvers(context);
 		initFlashMapManager(context);
 	}
@@ -589,10 +596,12 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initHandlerMappings(ApplicationContext context) {
 		this.handlerMappings = null;
 
+		// detectAllHandlerMappings 默认为true，决定是否检测所有的HandingMapping对象
 		if (this.detectAllHandlerMappings) {
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
 			Map<String, HandlerMapping> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);
+			// RequestMappingHandlerMapping / SimpleUrlHandlerMapping / BeanNameHandlerMapping
 			if (!matchingBeans.isEmpty()) {
 				this.handlerMappings = new ArrayList<>(matchingBeans.values());
 				// We keep HandlerMappings in sorted order.
@@ -612,6 +621,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// Ensure we have at least one HandlerMapping, by registering
 		// a default HandlerMapping if no other mappings are found.
 		if (this.handlerMappings == null) {
+			// 默认策略
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isTraceEnabled()) {
 				logger.trace("No HandlerMappings declared for servlet '" + getServletName() +

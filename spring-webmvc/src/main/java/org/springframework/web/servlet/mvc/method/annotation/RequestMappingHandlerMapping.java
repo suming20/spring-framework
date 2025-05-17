@@ -73,6 +73,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
  * @author Sam Brannen
  * @since 3.1
  */
+// requestMappingHandlerMapping
 public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMapping
 		implements MatchableHandlerMapping, EmbeddedValueResolverAware {
 

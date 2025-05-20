@@ -569,6 +569,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		// Do this first, it may add ResponseBody advice beans
 		initControllerAdviceCache();
 
+		// resolver handler默认的设置 afterPropertiesSet调用
 		if (this.argumentResolvers == null) {
 			List<HandlerMethodArgumentResolver> resolvers = getDefaultArgumentResolvers();
 			this.argumentResolvers = new HandlerMethodArgumentResolverComposite().addResolvers(resolvers);
@@ -865,13 +866,17 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		// Obtain wrapped response to enforce lifecycle rule from Servlet spec, section 2.3.3.4
 		response = asyncWebRequest.getNativeResponse(HttpServletResponse.class);
 
+		// 将Request 和response封装到ServletWebRequest对象（封装了一些操作方法）
 		ServletWebRequest webRequest = (asyncWebRequest instanceof ServletWebRequest ?
 				(ServletWebRequest) asyncWebRequest : new ServletWebRequest(request, response));
 
 		try {
+			// 工厂类，用来创建实例WebDataBinder继承自DataBinder类，为web请求提供了参数绑定服务（如表单数据与对象的自动绑定）
 			WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
 			ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
 
+			// 将handlerMethod包装为其子类ServletInvocableHandlerMethod
+			// ServletInvocableHandlerMethod继承并扩展了InvocableHandlerMethod
 			ServletInvocableHandlerMethod invocableMethod = createInvocableHandlerMethod(handlerMethod);
 			// argumentResolvers 参数解析器
 			if (this.argumentResolvers != null) {

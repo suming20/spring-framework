@@ -514,6 +514,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 			initLookupPath(request);
 		}
 
+		// 会将handler封装到handlerExecutionChain对象中，并将系统和自定义的拦截器加入到HandlerExecutionChain中
 		HandlerExecutionChain executionChain = getHandlerExecutionChain(handler, request);
 
 		if (logger.isTraceEnabled()) {

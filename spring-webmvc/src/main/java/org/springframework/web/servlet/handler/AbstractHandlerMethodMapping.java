@@ -279,9 +279,11 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		if (handlerType != null) {
 			Class<?> userType = ClassUtils.getUserClass(handlerType);
+			// 遍历方法，对注解中的信息进行处理，得到RequestMappingInfo对象，得到methods数组
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
 					(MethodIntrospector.MetadataLookup<T>) method -> {
 						try {
+							// 获取方法和类上的RequestMapping将其合并，没有则返回null，selectMethods不会将其放入到Map中
 							return getMappingForMethod(method, userType);
 						}
 						catch (Throwable ex) {
@@ -296,7 +298,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				mappingsLogger.debug(formatMappings(userType, methods));
 			}
 			methods.forEach((method, mapping) -> {
+				// 对方法的可访问性校验，获取最终请求路径
 				Method invocableMethod = AopUtils.selectInvocableMethod(method, userType);
+				// 注册到全局的MappingRegistry实例里
 				registerHandlerMethod(handler, invocableMethod, mapping);
 			});
 		}
@@ -633,20 +637,25 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		public void register(T mapping, Object handler, Method method) {
 			this.readWriteLock.writeLock().lock();
 			try {
+				// 处理方法的对象
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
+				// 判断映射的唯一性
 				validateMethodMapping(handlerMethod, mapping);
 
+				// 将path与处理器映射（一个方法可能处理多个url）
 				Set<String> directPaths = AbstractHandlerMethodMapping.this.getDirectPaths(mapping);
 				for (String path : directPaths) {
 					this.pathLookup.add(path, mapping);
 				}
 
+				// 控制器名大写英文缩写#方法名
 				String name = null;
 				if (getNamingStrategy() != null) {
 					name = getNamingStrategy().getName(handlerMethod, mapping);
 					addMappingName(name, handlerMethod);
 				}
 
+				// 跨域请求相关配置
 				CorsConfiguration corsConfig = initCorsConfiguration(handler, method, mapping);
 				if (corsConfig != null) {
 					corsConfig.validateAllowCredentials();

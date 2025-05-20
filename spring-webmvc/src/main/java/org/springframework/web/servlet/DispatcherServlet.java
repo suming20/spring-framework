@@ -972,6 +972,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		try {
+			//todo重要 doDispatch 真正开始处理http请求
 			doDispatch(request, response);
 		}
 		finally {
@@ -1040,7 +1041,9 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@SuppressWarnings("deprecation")
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// 此处用processedRequest，需要注意的是，若是上传处理，processedRequest将和Request不再指向同一对象
 		HttpServletRequest processedRequest = request;
+		// 处理器链
 		HandlerExecutionChain mappedHandler = null;
 		boolean multipartRequestParsed = false;
 
@@ -1051,21 +1054,27 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
+				// 如果请求是POST请求，并且请求头中Context-Type是以multipart/开头就认为是文件上传的请求
 				processedRequest = checkMultipart(request);
+				// 标记一下，是否是文件上传的Request
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.通过HandleMapping 获取handler 就是Controller
+				// 查找当前请求对应的handler，包裹handler和handler拦截器
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
+					// 未能找到，则抛出NoHandlerFoundException 并返回404
 					noHandlerFound(processedRequest, response);
 					return;
 				}
 
 				// Determine handler adapter for the current request.
 	 			// handlerAdapter具体调用 handler 获取适配器
+				// 查找对应的额handlerAdapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
+				// 处理last-modified请求，如果当前请求支持的话
 				String method = request.getMethod();
 				boolean isGet = HttpMethod.GET.matches(method);
 				if (isGet || HttpMethod.HEAD.matches(method)) {
@@ -1075,11 +1084,13 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
+				// 应用前置拦截，执行拦截器的preHandle方法，如果有拦截器返回false，则表名该拦截器已经处理了返回结果，直接返回
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
 
 				// Actually invoke the handler. 具体的调用，执行目标方法 通过适配器调用具体的handler
+				// 真正执行我们自己书写的Controller方法逻辑，返回一个ModelAndView
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
@@ -1087,6 +1098,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				applyDefaultViewName(processedRequest, mv);
+				// post方法执行，这个时候拦截器是倒序执行的
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
 			catch (Exception ex) {
@@ -1273,6 +1285,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	@Nullable
 	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 		if (this.handlerMappings != null) {
+			// RequestMappingHandlerMapping优先级最高
 			for (HandlerMapping mapping : this.handlerMappings) {
 				HandlerExecutionChain handler = mapping.getHandler(request);
 				if (handler != null) {

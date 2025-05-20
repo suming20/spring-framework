@@ -72,12 +72,14 @@ public final class MethodIntrospector {
 
 			ReflectionUtils.doWithMethods(currentHandlerType, method -> {
 				Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
+				// 调用外层接口AbstractHandlerMethodMapping中的匿名内部MetadataLookup内的方法 getMappingForMethod
 				T result = metadataLookup.inspect(specificMethod);
 				if (result != null) {
 					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
 					if (bridgedMethod == specificMethod || bridgedMethod == method ||
 							bridgedMethod.equals(specificMethod) || bridgedMethod.equals(method) ||
 							metadataLookup.inspect(bridgedMethod) == null) {
+						// 方法对象， RequestMappingInfo
 						methodMap.put(specificMethod, result);
 					}
 				}

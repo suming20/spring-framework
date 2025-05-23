@@ -115,7 +115,9 @@ class ComponentScanAnnotationParser {
 		for (Class<?> clazz : componentScan.getClassArray("basePackageClasses")) {
 			basePackages.add(ClassUtils.getPackageName(clazz));
 		}
+		// basePackages isEmpty
 		if (basePackages.isEmpty()) {
+			// 获取启动类所在的包名
 			basePackages.add(ClassUtils.getPackageName(declaringClass));
 		}
 

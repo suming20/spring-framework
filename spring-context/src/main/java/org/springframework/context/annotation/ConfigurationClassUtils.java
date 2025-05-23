@@ -122,10 +122,12 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// configuration 注解的解析 proxyBeanMethods=true full(完全配置类）
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// @Component @ComponentScan @Import @ImportResource 也看做配置类（lite)
 		else if (config != null || isConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}

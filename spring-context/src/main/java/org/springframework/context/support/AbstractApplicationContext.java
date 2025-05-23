@@ -594,7 +594,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Invoke factory processors registered as beans in the context.
 				// beanFactoryPostProcessor的注册，在此方法中，因为还没有注入 AutowiredAnnotationBeanPostProcessor/CommonAnnotationBeanPostProcessor
 				// 内部无法注入相关的bean；
-				// 此时在BeanFactory中会存在一个BeanFactoryPostProcessor：ConfigurationClassPostProcessor，
+				// 此时在BeanFactory中会存在一个BeanFactoryPostProcessor：ConfigurationClassPostProcessor，处理@Import,@ComponentScan, @Configuration+@Bean
 				// 它也是一个BeanDefinitionRegistryPostProcessor
 				invokeBeanFactoryPostProcessors(beanFactory);
 

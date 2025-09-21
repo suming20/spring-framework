@@ -83,11 +83,13 @@ public abstract class AbstractAdvisingBeanPostProcessor extends ProxyProcessorSu
 			}
 		}
 
+		// 判断给定的Bean是否符合后置处理器中的Advisor通知的条件，复合则创建代理对象
 		if (isEligible(bean, beanName)) {
 			ProxyFactory proxyFactory = prepareProxyFactory(bean, beanName);
 			if (!proxyFactory.isProxyTargetClass()) {
 				evaluateProxyInterfaces(bean.getClass(), proxyFactory);
 			}
+			// 添加Advisor
 			proxyFactory.addAdvisor(this.advisor);
 			customizeProxyFactory(proxyFactory);
 
@@ -96,6 +98,7 @@ public abstract class AbstractAdvisingBeanPostProcessor extends ProxyProcessorSu
 			if (classLoader instanceof SmartClassLoader && classLoader != bean.getClass().getClassLoader()) {
 				classLoader = ((SmartClassLoader) classLoader).getOriginalClassLoader();
 			}
+			// 返回代理对象
 			return proxyFactory.getProxy(classLoader);
 		}
 

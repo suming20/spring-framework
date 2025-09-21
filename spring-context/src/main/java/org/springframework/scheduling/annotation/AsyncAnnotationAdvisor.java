@@ -103,7 +103,9 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 		catch (ClassNotFoundException ex) {
 			// If EJB 3.1 API not present, simply ignore.
 		}
+		// 构建advice
 		this.advice = buildAdvice(executor, exceptionHandler);
+		// 构建pointcut
 		this.pointcut = buildPointcut(asyncAnnotationTypes);
 	}
 
@@ -162,7 +164,9 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 	protected Pointcut buildPointcut(Set<Class<? extends Annotation>> asyncAnnotationTypes) {
 		ComposablePointcut result = null;
 		for (Class<? extends Annotation> asyncAnnotationType : asyncAnnotationTypes) {
+			// 类匹配（类上有注解，则类中的所有方法都匹配）
 			Pointcut cpc = new AnnotationMatchingPointcut(asyncAnnotationType, true);
+			// 方法匹配（只有方法上有对应的注解才匹配）
 			Pointcut mpc = new AnnotationMatchingPointcut(null, asyncAnnotationType, true);
 			if (result == null) {
 				result = new ComposablePointcut(cpc);
@@ -170,6 +174,7 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 			else {
 				result.union(cpc);
 			}
+			// 取并集
 			result = result.union(mpc);
 		}
 		return (result != null ? result : Pointcut.TRUE);

@@ -161,19 +161,24 @@ public abstract class AsyncExecutionAspectSupport implements BeanFactoryAware {
 	 */
 	@Nullable
 	protected AsyncTaskExecutor determineAsyncExecutor(Method method) {
+		// 先从缓存中获取
 		AsyncTaskExecutor executor = this.executors.get(method);
 		if (executor == null) {
 			Executor targetExecutor;
+			// 获取执行器的限定符
 			String qualifier = getExecutorQualifier(method);
 			if (StringUtils.hasLength(qualifier)) {
 				targetExecutor = findQualifiedExecutor(this.beanFactory, qualifier);
 			}
 			else {
+				// 没有则使用默认的执行器
 				targetExecutor = this.defaultExecutor.get();
 			}
 			if (targetExecutor == null) {
 				return null;
 			}
+			// 将执行器包装为TaskExecutorAdapter
+			// TaskExecutorAdapter是spring对JDK线程池做的抽象，继承自JDK的Executor；
 			executor = (targetExecutor instanceof AsyncListenableTaskExecutor ?
 					(AsyncListenableTaskExecutor) targetExecutor : new TaskExecutorAdapter(targetExecutor));
 			this.executors.put(method, executor);
@@ -236,6 +241,7 @@ public abstract class AsyncExecutionAspectSupport implements BeanFactoryAware {
 				logger.debug("Could not find unique TaskExecutor bean. " +
 						"Continuing search for an Executor bean named 'taskExecutor'", ex);
 				try {
+					// 如果没有，则尝试从beanFactory中获取带有执行器名称的Executor线程池
 					return beanFactory.getBean(DEFAULT_TASK_EXECUTOR_BEAN_NAME, Executor.class);
 				}
 				catch (NoSuchBeanDefinitionException ex2) {

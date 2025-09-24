@@ -59,6 +59,7 @@ import org.springframework.util.StringUtils;
  * @author Sam Brannen
  * @since 3.2
  */
+// TODO 2025/9/22 springBoot auto configuration loadFactories加载META/INFO下的配置
 public final class SpringFactoriesLoader {
 
 	/**

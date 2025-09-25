@@ -188,6 +188,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
  * @see EnableWebMvc
  * @see WebMvcConfigurer
  */
+// 2025/9/25 WebMvcConfigurationSupport
 public class WebMvcConfigurationSupport implements ApplicationContextAware, ServletContextAware {
 
 	/**

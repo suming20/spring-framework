@@ -81,11 +81,13 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
 
 		HttpServletRequest requestToUse = request;
 
+		// 表单提交_method=put restFul方式处理
 		if ("POST".equals(request.getMethod()) && request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == null) {
 			String paramValue = request.getParameter(this.methodParam);
 			if (StringUtils.hasLength(paramValue)) {
 				String method = paramValue.toUpperCase(Locale.ENGLISH);
 				if (ALLOWED_METHODS.contains(method)) {
+					// 包装了httpServletRequest 重写了getMethod,返回的是传入的值；
 					requestToUse = new HttpMethodRequestWrapper(request, method);
 				}
 			}

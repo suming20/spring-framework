@@ -30,6 +30,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @since 3.1
  * @see HandlerMethodReturnValueHandler
  */
+// HandlerMethodArgumentResolver 参数解析器
 public interface HandlerMethodArgumentResolver {
 
 	/**

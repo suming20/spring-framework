@@ -109,6 +109,7 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return (parameter.hasParameterAnnotation(ModelAttribute.class) ||
+				// 是否必需 && 是否简单类型（POJO自定义类型不是）
 				(this.annotationNotRequired && !BeanUtils.isSimpleProperty(parameter.getParameterType())));
 	}
 
@@ -162,14 +163,18 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 			}
 		}
 
+		// 自定义类型封装 核心代码处理
 		if (bindingResult == null) {
 			// Bean property binding and validation;
 			// skipped in case of binding failure on construction.
+			// WebDataBinder web数据绑定器，将请求参数的值绑定到指定的javaBean中
+			// webDataBinder利用它里面的的converters将请求数据转为指定的类型，再次封装到javaBean中
 			WebDataBinder binder = binderFactory.createBinder(webRequest, attribute, name);
 			if (binder.getTarget() != null) {
 				if (!mavContainer.isBindingDisabled(name)) {
 					bindRequestParameters(binder, webRequest);
 				}
+				// validate校验
 				validateIfApplicable(binder, parameter);
 				if (binder.getBindingResult().hasErrors() && isBindExceptionRequired(binder, parameter)) {
 					throw new BindException(binder.getBindingResult());

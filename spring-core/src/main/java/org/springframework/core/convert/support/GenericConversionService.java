@@ -61,6 +61,7 @@ import org.springframework.util.StringUtils;
  * @author David Haraburda
  * @since 3.0
  */
+// 在设置每一个值的时候，找到它里面所有的converter那个可以将这个数据类型（request带来采纳数的字符集）转换到指定的类型（javaBean--Integer）
 public class GenericConversionService implements ConfigurableConversionService {
 
 	/**

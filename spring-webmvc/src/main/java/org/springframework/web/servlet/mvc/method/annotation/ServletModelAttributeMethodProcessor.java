@@ -49,6 +49,7 @@ import org.springframework.web.servlet.HandlerMapping;
  * @author Juergen Hoeller
  * @since 3.1
  */
+// 自定义类型参数处理 支持
 public class ServletModelAttributeMethodProcessor extends ModelAttributeMethodProcessor {
 
 	/**

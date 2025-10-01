@@ -35,6 +35,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @author Rossen Stoyanchev
  * @since 3.2
  */
+// 请求头 format对应的策略  favorParameter 开启配置true
 public class ParameterContentNegotiationStrategy extends AbstractMappingContentNegotiationStrategy {
 
 	private String parameterName = "format";

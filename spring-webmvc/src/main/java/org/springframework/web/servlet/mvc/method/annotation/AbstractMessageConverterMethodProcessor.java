@@ -202,7 +202,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			}
 		}
 
-		// 媒体类型
+		// mediaType 媒体类型
 		MediaType selectedMediaType = null;
 		// 判断当前响应中是否已有确定的媒体类型
 		MediaType contentType = outputMessage.getHeaders().getContentType();

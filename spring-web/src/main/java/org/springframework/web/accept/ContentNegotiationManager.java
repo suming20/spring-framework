@@ -47,6 +47,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @author Juergen Hoeller
  * @since 3.2
  */
+// 内容协商管理器
 public class ContentNegotiationManager implements ContentNegotiationStrategy, MediaTypeFileExtensionResolver {
 
 	private final List<ContentNegotiationStrategy> strategies = new ArrayList<>();

@@ -100,6 +100,7 @@ public class ViewNameMethodReturnValueHandler implements HandlerMethodReturnValu
 	 * @return "true" if the given view name is recognized as a redirect view
 	 * reference; "false" otherwise.
 	 */
+	// redirect重定向
 	protected boolean isRedirectViewName(String viewName) {
 		return (PatternMatchUtils.simpleMatch(this.redirectPatterns, viewName) || viewName.startsWith("redirect:"));
 	}

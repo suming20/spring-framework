@@ -69,6 +69,7 @@ import org.springframework.web.multipart.MultipartResolver;
  * @see HttpServletRequest#getParts()
  * @see org.springframework.web.multipart.commons.CommonsMultipartResolver
  */
+// 文件上传解析器
 public class StandardServletMultipartResolver implements MultipartResolver {
 
 	private boolean resolveLazily = false;
@@ -111,6 +112,7 @@ public class StandardServletMultipartResolver implements MultipartResolver {
 	}
 
 
+	// 判断是否满足文件处理 isMultipart
 	@Override
 	public boolean isMultipart(HttpServletRequest request) {
 		return StringUtils.startsWithIgnoreCase(request.getContentType(),

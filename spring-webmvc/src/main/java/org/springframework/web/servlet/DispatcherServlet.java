@@ -1056,6 +1056,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 			try {
 				// 如果请求是POST请求，并且请求头中Context-Type是以multipart/开头就认为是文件上传的请求
+				// 文件上出的StandardServletMultipartResolver会重新包装为StandardMultipartHttpServletRequest
 				processedRequest = checkMultipart(request);
 				// 标记一下，是否是文件上传的Request
 				multipartRequestParsed = (processedRequest != request);
@@ -1117,6 +1118,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			triggerAfterCompletion(processedRequest, response, mappedHandler, ex);
 		}
 		catch (Throwable err) {
+			// 有异常，都会触发AfterCompletion处理
 			triggerAfterCompletion(processedRequest, response, mappedHandler,
 					new NestedServletException("Handler processing failed", err));
 		}

@@ -40,6 +40,7 @@ import org.springframework.web.server.WebExceptionHandler;
  * @author Sebastien Deleuze
  * @since 5.0
  */
+// responseStatus注解的支持
 public class ResponseStatusExceptionHandler implements WebExceptionHandler {
 
 	private static final Log logger = LogFactory.getLog(ResponseStatusExceptionHandler.class);

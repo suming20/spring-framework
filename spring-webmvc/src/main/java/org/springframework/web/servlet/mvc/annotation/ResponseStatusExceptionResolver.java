@@ -157,6 +157,7 @@ public class ResponseStatusExceptionResolver extends AbstractHandlerExceptionRes
 			String resolvedReason = (this.messageSource != null ?
 					this.messageSource.getMessage(reason, null, reason, LocaleContextHolder.getLocale()) :
 					reason);
+			// 直接sendError，跳转错误页面
 			response.sendError(statusCode, resolvedReason);
 		}
 		return new ModelAndView();

@@ -74,6 +74,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Sebastien Deleuze
  * @since 3.1
  */
+// ExceptionHandler注解的解析器
 public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExceptionResolver
 		implements ApplicationContextAware, InitializingBean {
 

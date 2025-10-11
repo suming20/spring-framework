@@ -94,6 +94,7 @@ import org.springframework.context.annotation.Import;
  * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
  * @see org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration
  */
+// enableWebMvc会全名接管springBoot的配置，所有规则需要自己重新配置
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented

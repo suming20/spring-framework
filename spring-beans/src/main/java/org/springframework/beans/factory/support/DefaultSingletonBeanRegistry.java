@@ -219,6 +219,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 						if (singletonObject == null) {
 							ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 							if (singletonFactory != null) {
+								// 三级缓存会调用到ObjectFactory中的getEarlyBeanReference,获取半成品对象
 								singletonObject = singletonFactory.getObject();
 								// Singleton could have been added or removed in the meantime.
 								if (this.singletonFactories.remove(beanName) != null) {
@@ -375,6 +376,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 				if (newSingleton) {
 					try {
+						// 新创建的Bean添加到一级缓存中去
 						addSingleton(beanName, singletonObject);
 					}
 					catch (IllegalStateException ex) {

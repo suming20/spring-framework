@@ -138,6 +138,7 @@ public class DispatcherHandler implements WebHandler, PreFlightRequestHandler, A
 	}
 
 
+	// 请求和响应都封装在ServerWebExchange中
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange) {
 		if (this.handlerMappings == null) {
@@ -149,6 +150,7 @@ public class DispatcherHandler implements WebHandler, PreFlightRequestHandler, A
 		return Flux.fromIterable(this.handlerMappings)
 				.concatMap(mapping -> mapping.getHandler(exchange))
 				.next()
+				// 未拿到，则抛出404
 				.switchIfEmpty(createNotFoundError())
 				.onErrorResume(ex -> handleResultMono(exchange, Mono.error(ex)))
 				.flatMap(handler -> handleRequestWith(exchange, handler));
@@ -204,6 +206,7 @@ public class DispatcherHandler implements WebHandler, PreFlightRequestHandler, A
 		if (this.handlerAdapters != null) {
 			for (HandlerAdapter adapter : this.handlerAdapters) {
 				if (adapter.supports(handler)) {
+					// 处理器适配器，调用具体的处理器
 					Mono<HandlerResult> resultMono = adapter.handle(exchange, handler);
 					return handleResultMono(exchange, resultMono);
 				}

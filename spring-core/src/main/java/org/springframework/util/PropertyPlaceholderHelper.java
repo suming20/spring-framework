@@ -121,6 +121,8 @@ public class PropertyPlaceholderHelper {
 
 	/**
 	 * Strategy interface used to resolve replacement values for placeholders contained in Strings.
+	 * 函数式接口，指定从数据源获取对应属性的方式。；例如从Properties获取 properties::getProperty
+	 * 通常使用PropertySource::getProperty
 	 */
 	@FunctionalInterface
 	public interface PlaceholderResolver {

@@ -309,6 +309,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * Create a proxy with the configured interceptors if the bean is
 	 * identified as one to proxy by the subclass.
 	 * @see #getAdvicesAndAdvisorsForBean
+	 * 方法中会检查是否需要代理
 	 */
 	@Override
 	@Nullable
@@ -500,6 +501,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			}
 		}
 
+		// 生成的代理对象里，会保存一个Advisor[] 增强器数组，在方法调用时会触发Advisor里的Advice增强逻辑的调用
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		proxyFactory.addAdvisors(advisors);
 		proxyFactory.setTargetSource(targetSource);

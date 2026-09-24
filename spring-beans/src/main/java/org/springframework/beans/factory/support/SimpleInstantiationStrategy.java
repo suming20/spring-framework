@@ -142,6 +142,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 			Constructor<?> ctor, Object... args) {
 
 		if (!bd.hasMethodOverrides()) {
+			// 内部通过反射实例化
 			return BeanUtils.instantiateClass(ctor, args);
 		}
 		else {

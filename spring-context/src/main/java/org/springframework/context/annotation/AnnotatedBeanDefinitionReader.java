@@ -46,6 +46,7 @@ import org.springframework.util.Assert;
  * @author Yanming Zhou
  * @since 3.0
  * @see AnnotationConfigApplicationContext#register
+ * 注解配置方式，完成BeanDefinition的加载和注册
  */
 public class AnnotatedBeanDefinitionReader {
 

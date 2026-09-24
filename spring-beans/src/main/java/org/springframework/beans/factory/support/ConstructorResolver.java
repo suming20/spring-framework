@@ -314,6 +314,7 @@ class ConstructorResolver {
 			String beanName, RootBeanDefinition mbd, Constructor<?> constructorToUse, Object[] argsToUse) {
 
 		try {
+			// 选择实例化策略，默认是SimpleInstantiationStrategy； 是哟个呢instantiate实例化方法；
 			InstantiationStrategy strategy = this.beanFactory.getInstantiationStrategy();
 			return strategy.instantiate(mbd, beanName, this.beanFactory, constructorToUse, argsToUse);
 		}

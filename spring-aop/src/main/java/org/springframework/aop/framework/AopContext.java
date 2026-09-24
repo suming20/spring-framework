@@ -38,6 +38,7 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 13.03.2003
+ * 代理对象访问器
  */
 public final class AopContext {
 

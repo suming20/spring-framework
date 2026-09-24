@@ -31,9 +31,11 @@ import jakarta.servlet.http.HttpServletRequest;
  * @see #setAfterMessagePrefix
  * @see #setAfterMessageSuffix
  * @see org.apache.commons.logging.Log#debug(Object)
+ * 可以实现请求数据的详细日志记录
  */
 public class CommonsRequestLoggingFilter extends AbstractRequestLoggingFilter {
 
+	// 控制日志级别来显示
 	@Override
 	protected boolean shouldLog(HttpServletRequest request) {
 		return logger.isDebugEnabled();

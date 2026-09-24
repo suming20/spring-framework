@@ -46,6 +46,7 @@ import org.springframework.util.FastByteArrayOutputStream;
  * @author Sam Brannen
  * @since 4.1.3
  * @see ContentCachingRequestWrapper
+ * 缓存响应输出流程；支持再响应提交前修改内容（如添加签名，动态拼接参数等）
  */
 public class ContentCachingResponseWrapper extends HttpServletResponseWrapper {
 

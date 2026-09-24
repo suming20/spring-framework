@@ -53,6 +53,7 @@ import org.springframework.util.FastByteArrayOutputStream;
  * @author Brian Clozel
  * @since 4.1.3
  * @see ContentCachingResponseWrapper
+ * 请求包装器，缓存请求字节数据，允许多次读取；典型场景，记录日志后，控制器仍能正常解析请求体
  */
 public class ContentCachingRequestWrapper extends HttpServletRequestWrapper {
 

@@ -62,6 +62,7 @@ import org.springframework.util.ReflectionUtils;
  * @author Rob Harrop
  * @author Sebastien Deleuze
  * @see org.springframework.aop.framework.AopProxyUtils
+ * 代理类型判断工具
  */
 public abstract class AopUtils {
 

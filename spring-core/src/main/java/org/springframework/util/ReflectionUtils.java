@@ -42,6 +42,7 @@ import org.springframework.lang.Nullable;
  * @author Sam Brannen
  * @author Chris Beams
  * @since 1.2.2
+ * 反射操作简化器，封装繁琐的反射API，支持安全访问私有对象
  */
 public abstract class ReflectionUtils {
 

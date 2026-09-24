@@ -102,6 +102,7 @@ public abstract class AbstractRequestLoggingFilter extends OncePerRequestFilter 
 	@Nullable
 	private Predicate<String> headerPredicate;
 
+	// 限制请求体日志长度，避免大字段溢出
 	private int maxPayloadLength = DEFAULT_MAX_PAYLOAD_LENGTH;
 
 	private String beforeMessagePrefix = DEFAULT_BEFORE_MESSAGE_PREFIX;

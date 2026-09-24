@@ -88,6 +88,7 @@ import org.springframework.util.StringUtils;
  * @author Madhura Bhave
  * @author Phillip Webb
  * @since 3.2
+ * 核心作用是：基于约定的配置文件，实现接口的实现类自动加载，本质是一种SPI扩展机制的Spring实现
  */
 public class SpringFactoriesLoader {
 

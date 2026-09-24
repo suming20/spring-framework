@@ -66,6 +66,7 @@ import org.springframework.web.util.WebUtils;
  * @author Rossen Stoyanchev
  * @author Sam Brannen
  * @since 06.12.2003
+ * 确保过滤器再请求生命周期内仅执行一次
  */
 public abstract class OncePerRequestFilter extends GenericFilterBean {
 
@@ -180,6 +181,7 @@ public abstract class OncePerRequestFilter extends GenericFilterBean {
 	 * @param request current HTTP request
 	 * @return whether the given request should <i>not</i> be filtered
 	 * @throws ServletException in case of errors
+	 * 避免重复处理，自动识别同一请求的多次调度
 	 */
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 		return false;

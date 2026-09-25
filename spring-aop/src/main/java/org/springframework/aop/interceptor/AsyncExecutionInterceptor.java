@@ -109,9 +109,11 @@ public class AsyncExecutionInterceptor extends AsyncExecutionAspectSupport imple
 					"No executor specified and no default executor set on AsyncExecutionInterceptor either");
 		}
 
+		// 定义任务
 		Callable<Object> task = () -> {
 			try {
 				Object result = invocation.proceed();
+				// 如果方法返回值时Future，则阻塞等待执行完毕得到结果
 				if (result instanceof Future<?> future) {
 					return future.get();
 				}

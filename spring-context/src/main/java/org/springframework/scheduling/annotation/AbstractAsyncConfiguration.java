@@ -80,6 +80,7 @@ public abstract class AbstractAsyncConfiguration implements ImportAware {
 			}
 			return candidates.get(0);
 		});
+		// AsyncConfigurer可以用来自定义异步任务执行器和异常处理器
 		this.executor = adapt(configurer, AsyncConfigurer::getAsyncExecutor);
 		this.exceptionHandler = adapt(configurer, AsyncConfigurer::getAsyncUncaughtExceptionHandler);
 	}

@@ -154,6 +154,10 @@ import org.springframework.core.Ordered;
  * @see Async
  * @see AsyncConfigurer
  * @see AsyncConfigurationSelector
+ * 开始异步执行器
+ * 默认情况下spring会先搜索TaskExecutor类型的bean或者名字为taskExecutor的Executor类型的bean,都不存在使
+ * 用SimpleAsyncTaskExecutor执行器
+ * 可实现AsyncConfigurer接口复写getAsyncExecutor获取异步执行器，getAsyncUncaughtExceptionHandler获* 取异步未捕获异常处理器
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -183,6 +187,7 @@ public @interface EnableAsync {
 	 * will be upgraded to subclass proxying at the same time. This approach has no
 	 * negative impact in practice unless one is explicitly expecting one type of proxy
 	 * vs. another &mdash; for example, in tests.
+	 * 标明是否创建cglib代理对象， AdviceMode=Proxy
 	 */
 	boolean proxyTargetClass() default false;
 
@@ -204,6 +209,7 @@ public @interface EnableAsync {
 	 * <p>The default is {@link Ordered#LOWEST_PRECEDENCE} in order to run
 	 * after all other post-processors, so that it can add an advisor to
 	 * existing proxies rather than double-proxy.
+	 * 异步注解Bean处理，应该执行的顺序，默认值越小，优先级越高
 	 */
 	int order() default Ordered.LOWEST_PRECEDENCE;
 

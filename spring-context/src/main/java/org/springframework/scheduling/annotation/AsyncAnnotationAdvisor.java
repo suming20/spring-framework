@@ -89,6 +89,7 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 	 * handle unexpected exception thrown by asynchronous method executions
 	 * @since 5.1
 	 * @see AnnotationAsyncExecutionInterceptor#getDefaultExecutor(BeanFactory)
+	 * 异步注解的切面，定义了@Async解析的切面，具体在AbstractAdvisingBeanPostProcessor.postProcessAfterInitialization方法
 	 */
 	@SuppressWarnings("unchecked")
 	public AsyncAnnotationAdvisor(

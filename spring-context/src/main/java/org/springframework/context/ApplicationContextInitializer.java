@@ -38,6 +38,7 @@ package org.springframework.context;
  * @see org.springframework.web.context.ContextLoader#CONTEXT_INITIALIZER_CLASSES_PARAM
  * @see org.springframework.web.servlet.FrameworkServlet#setContextInitializerClasses
  * @see org.springframework.web.servlet.FrameworkServlet#applyInitializers
+ * 整个spring容器在刷新之前初始化ConfigurableApplicationContext的回调接口
  */
 @FunctionalInterface
 public interface ApplicationContextInitializer<C extends ConfigurableApplicationContext> {

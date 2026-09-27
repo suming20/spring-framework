@@ -88,6 +88,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 	}
 
 	private void invokeAwareInterfaces(Object bean) {
+		// 多个扩展点的回调
 		if (bean instanceof EnvironmentAware environmentAware) {
 			environmentAware.setEnvironment(this.applicationContext.getEnvironment());
 		}
@@ -106,6 +107,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 		if (bean instanceof ApplicationStartupAware applicationStartupAware) {
 			applicationStartupAware.setApplicationStartup(this.applicationContext.getApplicationStartup());
 		}
+		// ApplicationContextAware
 		if (bean instanceof ApplicationContextAware applicationContextAware) {
 			applicationContextAware.setApplicationContext(this.applicationContext);
 		}

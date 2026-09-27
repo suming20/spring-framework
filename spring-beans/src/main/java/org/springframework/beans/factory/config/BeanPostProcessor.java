@@ -54,6 +54,7 @@ import org.springframework.lang.Nullable;
  * @see DestructionAwareBeanPostProcessor
  * @see ConfigurableBeanFactory#addBeanPostProcessor
  * @see BeanFactoryPostProcessor
+ * Bean的后置处理器，再初始化方法回调的前后，对Bean做一些特殊的处理；
  */
 public interface BeanPostProcessor {
 

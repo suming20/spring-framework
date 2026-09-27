@@ -57,6 +57,8 @@ import org.springframework.lang.Nullable;
  * @see Import
  * @see ImportBeanDefinitionRegistrar
  * @see Configuration
+ * 通常用于导入一些外部的Bean（非Spring自己管理的）；@Import注解是通过上面说到的ConfigurationClassPostProcessor进行处理的
+ * 回调时机自然也是跟BeanDefinitionRegistryPostProcessor相同。
  */
 public interface ImportSelector {
 
@@ -64,6 +66,7 @@ public interface ImportSelector {
 	 * Select and return the names of which class(es) should be imported based on
 	 * the {@link AnnotationMetadata} of the importing @{@link Configuration} class.
 	 * @return the class names, or an empty array if none
+	 * 返回类的全限定名数组
 	 */
 	String[] selectImports(AnnotationMetadata importingClassMetadata);
 

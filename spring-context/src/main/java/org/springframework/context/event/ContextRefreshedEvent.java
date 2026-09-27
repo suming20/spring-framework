@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
  * @author Juergen Hoeller
  * @since 04.03.2003
  * @see ContextClosedEvent
+ * refresh()#finishRefresh最后，刷新事件
  */
 @SuppressWarnings("serial")
 public class ContextRefreshedEvent extends ApplicationContextEvent {

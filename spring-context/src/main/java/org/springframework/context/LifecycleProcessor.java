@@ -22,6 +22,7 @@ package org.springframework.context;
  * @author Mark Fisher
  * @author Juergen Hoeller
  * @since 3.0
+ * Lifecycle的子接口，处理Lifecycle的实现Bean
  */
 public interface LifecycleProcessor extends Lifecycle {
 

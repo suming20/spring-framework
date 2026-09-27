@@ -61,6 +61,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.BeanFactory
  * @see org.springframework.aop.framework.ProxyFactoryBean
  * @see org.springframework.jndi.JndiObjectFactoryBean
+ * 扩展Bean接口，进行Bean的实例化与初始化
  */
 public interface FactoryBean<T> {
 

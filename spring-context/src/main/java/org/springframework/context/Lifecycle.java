@@ -46,6 +46,8 @@ package org.springframework.context;
  * @see ConfigurableApplicationContext
  * @see org.springframework.jms.listener.AbstractMessageListenerContainer
  * @see org.springframework.scheduling.quartz.SchedulerFactoryBean
+ * 实现了该接口的bean，会在Spring容器完成刷新后，回调它的start方法，也就是该bean已经完成初始化被放入到容器后。
+ * 而stop方法则是在容器关闭时被回调，也就是Spring上下文的close方法被调用的时候。
  */
 public interface Lifecycle {
 

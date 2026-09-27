@@ -34,6 +34,8 @@ package org.springframework.beans.factory;
  * @see BeanNameAware
  * @see BeanFactoryAware
  * @see InitializingBean
+ * 用于让一个 Bean 获取到加载它的 ClassLoader
+ * 使用场景：动态加载类；检查类的可用性，加载资源文件；
  */
 public interface BeanClassLoaderAware extends Aware {
 

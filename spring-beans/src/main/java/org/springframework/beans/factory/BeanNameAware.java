@@ -32,6 +32,7 @@ package org.springframework.beans.factory;
  * @see BeanClassLoaderAware
  * @see BeanFactoryAware
  * @see InitializingBean
+ * 触发点在bean的初始化之前；也就是postProcessBeforeInitialization之前，这个类的触发点方法只有一个：setBeanName
  */
 public interface BeanNameAware extends Aware {
 

@@ -126,6 +126,7 @@ import org.springframework.util.CollectionUtils;
  * @author Phillip Webb
  * @author Sam Brannen
  * @since 3.0
+ *  这些 @Configuration、@ComponentScan、@Component、@Bean、@Import 等注解的处理通过当前类实现
  */
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor,
 		BeanRegistrationAotProcessor, BeanFactoryInitializationAotProcessor, PriorityOrdered,

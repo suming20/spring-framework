@@ -57,6 +57,8 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see Import
  * @see ImportSelector
  * @see Configuration
+ * 允许我们实现自己的ImportBeanDefinitionRegistrar，可以往容器中注册一些我们自己的bean。
+ * 跟BeanDefinitionRegistryPostProcessor有点类似，当前接口一般框架使用，回调时机跟ImportSelector一样
  */
 public interface ImportBeanDefinitionRegistrar {
 

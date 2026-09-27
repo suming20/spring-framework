@@ -37,6 +37,7 @@ import org.springframework.beans.BeansException;
  * @see BeanClassLoaderAware
  * @see InitializingBean
  * @see org.springframework.context.ApplicationContextAware
+ * 动态获取其他bean；检查bean的状态；创建复杂bean的初始化逻辑；
  */
 public interface BeanFactoryAware extends Aware {
 

@@ -28,6 +28,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @author Mark Fisher
  * @since 2.5
+ * 用于对Spring的依赖注入做扩展，Spring在进行依赖注入时，会回调AutowireCandidateResolver这个接口的getSuggestedValue方法，
+ * 如果返回值不为空，就会为当前bean的这个属性注入getSuggestedValue方法的返回值
+ * 可以外某些Bean做特殊的以来注入；
+ * 多个AutowireCandidateResolver有效，原来的resolver保存到我们自己的resolver中，作为父子，如果不需要我们处理的属性，让父resolver处理
  */
 public interface AutowireCandidateResolver {
 

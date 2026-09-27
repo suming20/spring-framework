@@ -226,8 +226,10 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 	}
 
 
+	// Spring的一个专门用来处理${…}占位符的处理器，会解析${…}占位符，替换为与之对应的配置文件属性或者系统参数。
 	private class PlaceholderResolvingStringValueResolver implements StringValueResolver {
 
+		// PropertyPlaceholderHelper用来处理指定前后缀的占位符号解析；
 		private final PropertyPlaceholderHelper helper;
 
 		private final PlaceholderResolver resolver;

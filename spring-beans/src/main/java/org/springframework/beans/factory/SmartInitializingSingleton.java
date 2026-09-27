@@ -40,6 +40,8 @@ package org.springframework.beans.factory;
  * @author Juergen Hoeller
  * @since 4.1
  * @see org.springframework.beans.factory.config.ConfigurableListableBeanFactory#preInstantiateSingletons()
+ * 所有的单例bean都预加载完成，放入到Spring容器后，Spring会取出所有实现了该接口的单例bean，回调afterSingletonsInstantiated方法
+ * 限定了非懒加载的单例Bean实现该接口，否则无效，而@InitializingBean没有此限制
  */
 public interface SmartInitializingSingleton {
 

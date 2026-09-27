@@ -212,6 +212,8 @@ public class InitDestroyAnnotationBeanPostProcessor implements DestructionAwareB
 		return mergedNames.distinct().toArray(String[]::new);
 	}
 
+	// 会检查当前bean是否有被@PostConstruct注解修饰的方法，如果有会通过反射回调该方法。
+	// 具体的@PostConstruct 是由CommonAnnotationBeanPostProcessor(当前类的子类）来 设置的
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		LifecycleMetadata metadata = findLifecycleMetadata(bean.getClass());

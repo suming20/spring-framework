@@ -26,6 +26,8 @@ import org.springframework.lang.Nullable;
  *
  * @author Juergen Hoeller
  * @since 2.0.7
+ * 最终间接的实现了BeanPostProcessor 接口，
+ * 在AbstractAutoProxyCreator中重写了 postProcessAfterInitialization方法。该方法作用就是用来处理需要代理的对象。
  */
 @SuppressWarnings("serial")
 public class InfrastructureAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {

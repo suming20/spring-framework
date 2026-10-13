@@ -376,6 +376,7 @@ public abstract class AbstractPlatformTransactionManager
 		// Use defaults if no transaction definition given.
 		TransactionDefinition def = (definition != null ? definition : TransactionDefinition.withDefaults());
 
+		// 获取当前事务
 		Object transaction = doGetTransaction();
 		boolean debugEnabled = logger.isDebugEnabled();
 
@@ -415,6 +416,7 @@ public abstract class AbstractPlatformTransactionManager
 				logger.warn("Custom isolation level specified but no actual transaction initiated; " +
 						"isolation level will effectively be ignored: " + def);
 			}
+			// 创建一个空的事务——也就是没有事务
 			boolean newSynchronization = (getTransactionSynchronization() == SYNCHRONIZATION_ALWAYS);
 			return prepareTransactionStatus(def, null, true, newSynchronization, debugEnabled, null);
 		}
@@ -458,6 +460,7 @@ public abstract class AbstractPlatformTransactionManager
 		}
 
 		if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NESTED) {
+			// 不是所有的数据库都支持嵌套事务，先判断
 			if (!isNestedTransactionAllowed()) {
 				throw new NestedTransactionNotSupportedException(
 						"Transaction manager does not allow nested transactions by default - " +
@@ -545,6 +548,7 @@ public abstract class AbstractPlatformTransactionManager
 	 * also initializing transaction synchronization as appropriate.
 	 * @see #newTransactionStatus
 	 * @see #prepareTransactionStatus
+	 * 创建事务状态管理器，其实就是把和新事务相关的信息存放起来，来看看它的属性信息。
 	 */
 	private DefaultTransactionStatus prepareTransactionStatus(
 			TransactionDefinition definition, @Nullable Object transaction, boolean newTransaction,

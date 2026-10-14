@@ -30,6 +30,7 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @since 3.0
+ * spel主要接口，解析器
  */
 public class SpelExpressionParser extends TemplateAwareExpressionParser {
 

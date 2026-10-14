@@ -59,6 +59,7 @@ public interface ParserContext {
 	 * expression parsing.
 	 * <p>The expression prefix is "#{", and the expression suffix is "}".
 	 * @see #isTemplate()
+	 * 标准PaserContext
 	 */
 	ParserContext TEMPLATE_EXPRESSION = new ParserContext() {
 

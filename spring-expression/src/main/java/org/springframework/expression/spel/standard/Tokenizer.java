@@ -33,6 +33,7 @@ import org.springframework.expression.spel.SpelParseException;
  * @author Phillip Webb
  * @author Sam Brannen
  * @since 3.0
+ * 词法分析，将原始表达式字符串拆分为Token流
  */
 class Tokenizer {
 

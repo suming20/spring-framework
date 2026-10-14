@@ -76,20 +76,25 @@ import org.springframework.util.Assert;
  * @see StandardTypeConverter
  * @see StandardTypeComparator
  * @see StandardOperatorOverloader
+ * 作为求值环境的核心实现，采用分层设计管理变量和函数
  */
 public class StandardEvaluationContext implements EvaluationContext {
 
+	// 根对象
 	private TypedValue rootObject;
 
+	// 属性访问器链
 	@Nullable
 	private volatile List<PropertyAccessor> propertyAccessors;
 
 	@Nullable
 	private volatile List<IndexAccessor> indexAccessors;
 
+	// 构造函数解析器链
 	@Nullable
 	private volatile List<ConstructorResolver> constructorResolvers;
 
+	// 方法解析器链
 	@Nullable
 	private volatile List<MethodResolver> methodResolvers;
 
@@ -99,6 +104,7 @@ public class StandardEvaluationContext implements EvaluationContext {
 	@Nullable
 	private BeanResolver beanResolver;
 
+	// 类型定位器
 	@Nullable
 	private TypeLocator typeLocator;
 

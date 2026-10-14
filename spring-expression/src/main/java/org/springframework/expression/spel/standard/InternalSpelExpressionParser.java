@@ -133,6 +133,7 @@ class InternalSpelExpressionParser extends TemplateAwareExpressionParser {
 		try {
 			this.expressionString = expressionString;
 			Tokenizer tokenizer = new Tokenizer(expressionString);
+			// tokenizer处理
 			this.tokenStream = tokenizer.process();
 			this.tokenStreamLength = this.tokenStream.size();
 			this.tokenStreamPointer = 0;

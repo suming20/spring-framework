@@ -108,6 +108,7 @@ public class TransactionAwareCacheDecorator implements Cache {
 	@Override
 	public void put(final Object key, @Nullable final Object value) {
 		if (TransactionSynchronizationManager.isSynchronizationActive()) {
+			// 通过根据当前事务状态，添加synchronization钩子来处理
 			TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
 				@Override
 				public void afterCommit() {

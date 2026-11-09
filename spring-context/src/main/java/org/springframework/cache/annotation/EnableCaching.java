@@ -160,6 +160,7 @@ import org.springframework.core.Ordered;
  * @see CachingConfigurationSelector
  * @see ProxyCachingConfiguration
  * @see org.springframework.cache.aspectj.AspectJCachingConfiguration
+ * spring cache的启用
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

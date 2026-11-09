@@ -36,6 +36,7 @@ import org.springframework.util.Assert;
  * @author Stephane Maldini
  * @author Rossen Stoyanchev
  * @since 5.0
+ * 学习springcloud gateway 入口源码 基于webflux
  */
 public class ReactorHttpHandlerAdapter implements BiFunction<HttpServerRequest, HttpServerResponse, Mono<Void>> {
 
@@ -62,6 +63,7 @@ public class ReactorHttpHandlerAdapter implements BiFunction<HttpServerRequest, 
 				response = new HttpHeadResponseDecorator(response);
 			}
 
+			// 交给HttpWebHandlerAdapter处理
 			return this.httpHandler.handle(request, response)
 					.doOnError(ex -> logger.trace(request.getLogPrefix() + "Failed to complete: " + ex.getMessage()))
 					.doOnSuccess(aVoid -> logger.trace(request.getLogPrefix() + "Handling completed"));

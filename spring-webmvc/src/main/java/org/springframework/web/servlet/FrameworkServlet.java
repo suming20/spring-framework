@@ -534,6 +534,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		long startTime = System.currentTimeMillis();
 
 		try {
+			// 初始化上下文
 			this.webApplicationContext = initWebApplicationContext();
 			initFrameworkServlet();
 		}
@@ -565,6 +566,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @see #setContextConfigLocation
 	 */
 	protected WebApplicationContext initWebApplicationContext() {
+		// 第一次时null，会走下面的创建流程
 		WebApplicationContext rootContext =
 				WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		WebApplicationContext wac = null;
@@ -592,6 +594,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		}
 		if (wac == null) {
 			// No context instance is defined for this servlet -> create a local one
+			// 开始创建，将rootContext作为父容器传递进去，第一次为null
 			wac = createWebApplicationContext(rootContext);
 		}
 
@@ -599,7 +602,9 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// Either the context is not a ConfigurableApplicationContext with refresh
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
+			// 事件发布监听onApplicationEvent方法触发
 			synchronized (this.onRefreshMonitor) {
+				// DispatcherServlet扩展实现
 				onRefresh(wac);
 			}
 		}
@@ -665,10 +670,12 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		wac.setEnvironment(getEnvironment());
 		wac.setParent(parent);
+		// contextConfigLocation 也就是web.xml里面配置的spring-mvc的xml文件
 		String configLocation = getContextConfigLocation();
 		if (configLocation != null) {
 			wac.setConfigLocation(configLocation);
 		}
+		// config and refresh 也就是refresh方法
 		configureAndRefreshWebApplicationContext(wac);
 
 		return wac;
@@ -701,8 +708,10 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			cwe.initPropertySources(getServletContext(), getServletConfig());
 		}
 
+		// 后置增强，一般时空的
 		postProcessWebApplicationContext(wac);
 		applyInitializers(wac);
+		// 调用了IOC的refresh方法
 		wac.refresh();
 	}
 
@@ -839,10 +848,12 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * <p>The default implementation calls {@link #onRefresh},
 	 * triggering a refresh of this servlet's context-dependent state.
 	 * @param event the incoming ApplicationContext event
+	 * 监听ContextRefreshedEvent触发
 	 */
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		this.refreshEventReceived = true;
 		synchronized (this.onRefreshMonitor) {
+			// 此处还是调用的DispatcherServlet的扩展处理
 			onRefresh(event.getApplicationContext());
 		}
 	}

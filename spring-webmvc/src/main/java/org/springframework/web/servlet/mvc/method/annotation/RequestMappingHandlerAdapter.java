@@ -888,6 +888,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		}
 		else {
 			// No synchronization on session demanded at all...
+			// 开始调用业务控制器
 			mav = invokeHandlerMethod(request, response, handlerMethod);
 		}
 

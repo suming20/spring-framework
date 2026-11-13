@@ -583,7 +583,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.applicationListeners;
 	}
 
-	// Spring IOC容器初始化refresh
+	// todo Spring IOC容器初始化refresh
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		this.startupShutdownLock.lock();
@@ -596,14 +596,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			/**
+			 * 关闭旧的beanFactory，创建新的Beanfactory
+			 * 加载Bean定义，注册bean定义到beanFactory
+			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// DefaultListableBeanFactory
 			// Prepare the bean factory for use in this context.
+			// bean工厂前置操作，为beanFactory配置容器特性；例如类加载器，表达式解析器，注册默认环境bean,后置管理器
 			prepareBeanFactory(beanFactory);
 
 			try {
-				// 允许子类扩展
+				// 空方法，允许子类扩展
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
@@ -635,7 +640,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 
-				// 发布FinishEvent
+				// 发布FinishEvent，清除上下文环境
 				// Last step: publish corresponding event.
 				finishRefresh();
 			}

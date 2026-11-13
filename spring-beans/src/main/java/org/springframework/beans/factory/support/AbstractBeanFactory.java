@@ -312,6 +312,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						}
 						registerDependentBean(dep, beanName);
 						try {
+							// dependsOn修饰 需要先实例化
 							getBean(dep);
 						}
 						catch (NoSuchBeanDefinitionException ex) {

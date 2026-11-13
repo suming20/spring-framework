@@ -300,6 +300,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				}
 
 				try {
+					// 加入到创建的名单中，这个在一开始的Singleton里判断使用
 					beforeSingletonCreation(beanName);
 				}
 				catch (BeanCurrentlyInCreationException ex) {
